@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Book Package Page -->
+    <div class="page-title" data-aos="fade">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Book Package</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Book Package Page -->
+
+
+
+    <!-- Book Package Section -->
+   <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Book Package</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}               
+        {% endif %}
+
+        <div class="row gy-2  justify-content-center">
+
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+            <form  method="POST" role="form" class="php-email-form" >
+                
+                {% csrf_token %}
+              <div class="row">               
+                    <div class="col">
+                     
+                        <label for="package" class="form-label text-secondary">Package</label>
+                        <!-- <select id="id_package" name="package" class="form-select" {% if package_locked %} disabled {% endif %}>
+                           <option value="">-- Select Package --</option> -->
+                          <!-- from the booking form select only active-true test packages -->
+                          <!-- {% for pkg in form.fields.package.queryset %}
+                          <option value="{{pkg.id}}" {% if package and pkg.id == package.id  %} selected {% endif %}  data-home="{{pkg.home_collection}}">{{pkg.name}}</option>
+                          {% endfor %}
+                          </select> -->
+                          {% if package_locked %}
+                          <input type="hidden" name="package" value="{{package.id}}">
+                          {% endif %}
+                          {{ form.package }}
+                    </div>
+                    <div class="col">
+                        <label for="preferreddate" class="form-label text-secondary">Date</label>
+                        {{ form.preferred_date }}
+                        
+                    </div>
+                </div>
+                <div class="row mt-3">               
+                    <div class="col">
+                        <label for="preferreddate" class="form-label text-secondary">Collection Type</label>
+                        <div id="collection-wrapper">{{ form.collection_type }}</div>
+                        
+                        <small id="text-muted">
+                         Home collection is not available for this package
+                        </small>
+                       
+                        
+                    </div>
+                    <div class="slot-container col" id="slot-container">
+                      
+                      {% if form.no_slots_available %}
+                        <p class="text-danger">
+                          No slots available for the selected date
+                        </p>
+                        {% else %}
+                          {% for radio in form.slot %}
+                            <label class="slot-btn">
+                                {{ radio.tag }}
+                                <span>{{ radio.choice_label }}</span>
+                            </label>
+                          {% endfor %}
+
+                      {% endif %}
+                    </div>
+                </div>
+                <button type="submit" name="check_slots" class="btn btn-outline-primary">
+                    Check Slot Availability
+                </button>
+
+    
+              <div class="mt-3">
+                <div class="text-center"><button type="submit" >Book Test</button></div>
+              </div>
+            </form>
+          </div><!-- End Book Package -->
+
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Book Package Section -->
+   
+
+{% endblock %} 

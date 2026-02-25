@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load currency_filters %}
+
+{% block content %}
+    <!-- Packages Detail Page -->
+    <div class="page-title" data-aos="fade">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">{{category.name}}</li>
+          </ol>
+        </div>
+      </nav>
+
+
+    <!-- About Section -->
+    <section id="about" class="about doctors section">
+
+      <div class="container">
+
+        <div class="row gy-4 gx-5">
+
+          <div class="col-lg-4 position-relative align-self-start" data-aos="fade-up" data-aos-delay="200">
+            <!-- FILTER SIDEBAR -->
+
+                <div class="card shadow-sm p-3">
+                  <h5 class="mb-3">Filter Packages</h5>
+
+                  <form method="get">
+
+                    <!-- Gender -->
+                    <div class="mb-3">
+                      <label class="form-label">Gender</label>
+                      <select name="gender" class="form-select">
+                        <option value="">All</option>
+                        <option value="MALE" {% if request.GET.gender == "MALE" %}selected{% endif %}>Male</option>
+                        <option value="FEMALE" {% if request.GET.gender == "FEMALE" %}selected{% endif %}>Female</option>
+                      </select>
+                    </div>
+
+                    <!-- Age -->
+                    <div class="mb-3">
+                      <label class="form-label">Your Age</label>
+                      <input type="number"
+                            name="age"
+                            class="form-control"
+                            min="0"
+                            value="{{ request.GET.age }}">
+                    </div>
+
+                    <!-- Min Price -->
+                    <div class="mb-3">
+                      <label class="form-label">Min Price</label>
+                      <input type="number"
+                            name="min_price"
+                            class="form-control"
+                            value="{{ request.GET.min_price }}">
+                    </div>
+
+                    <!-- Max Price -->
+                    <div class="mb-3">
+                      <label class="form-label">Max Price</label>
+                      <input type="number"
+                            name="max_price"
+                            class="form-control"
+                            value="{{ request.GET.max_price }}">
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">
+                      Apply Filters
+                    </button>
+
+                    <a href="{% url 'category_packages' category.id %}"
+                      class="btn btn-outline-secondary w-100 mt-2">
+                      Clear Filters
+                    </a>
+
+                  </form>
+                </div>       
+            
+
+
+
+          </div>
+
+          <div class="col-lg-7 content" data-aos="fade-up" data-aos-delay="100">
+            <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+
+              {% for package in packages %}
+                <div class="team-member d-flex align-items-start mb-5">
+                  
+                  <div class="member-info">
+                    <h4>{{ package.name }}</h4>
+                    <span><b>Gender: </b>{{ package.gender|title }}</span>
+                    <p><i class="fa-solid fa-file-lines"></i>
+                      Reports in {{ package.report_time }}</p>
+                      <h6 class="text-primary">{{ package.price|inr_format }}</h6>
+                       <p>{{ package.intro_description|truncatewords:50|safe   }}</p>
+
+                    
+                      <a href="{% url 'packages_detail' package.id %}"  class="btn btn-outline-primary mt-2">View Details</a>
+                  </div>
+                </div>
+                {% empty %}
+                 <div class="text-center py-5">
+                  <h5>No Packages Match Your Filter</h5>
+                </div>
+
+
+               {% endfor %}
+
+
+
+            </div><!-- End Team Member -->
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section><!-- /About Section -->
+
+
+
+{% endblock %} 

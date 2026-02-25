@@ -1,0 +1,222 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Booking Detail Page -->
+    <div class="page-title" data-aos="fade">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Booking List</li>
+          </ol>
+        </div>
+      </nav>    <!-- Booking Section -->
+
+      <!-- View Booking Section -->
+    <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>My Bookings</h2>
+      </div><!-- End Section Title -->
+
+
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}               
+        {% endif %}
+
+          <div class="row justify-content-center g-0">
+              <div class="col-lg-12 col-md-10 col-12 p-0 view_table border rounded-3 overflow-hidden">
+                    <table class="table table-success table-striped table-hover mb-0" >
+                        <thead class="text-white" >
+                            <tr class="">
+                            <th scope="col" class="border-0 thead">#</th>
+                            <th scope="col" class="border-0 thead">Package</th>
+                            <th scope="col" class="border-0 thead">Test Date</th>
+                            <th scope="col" class="border-0 thead">Slot</th>
+                            <th scope="col" class="border-0 thead">Booking Status</th>
+                            <th scope="col" class="border-0 thead">Payment Status</th>
+                            <th scope="col" class="border-0 thead">Reports</th>
+                            <th scope="col" class="border-0 thead">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                                <tr>
+                                <th scope="row">{{ bookings.start_index|add:forloop.counter0 }}</th>
+                                <td>{{booking.package.name}}</td>
+                                <td>{{booking.preferred_date}}</td>
+                                <td>{% if booking.slot %}
+                                    <!-- show 10-11 as 10AM -11AM -->
+                                        {{ booking.slot.get_time_slot_display }}
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                                </td>
+                                <td>
+                                  
+                                  {% if booking.status == 'PENDING' and booking.preferred_date >= today %}
+                                    <a href="{% url 'payment' booking.id %}" class="btn btn-warning">Pay Now</a>
+                                  {% elif  booking.status == 'EXPIRED' %}
+                                    <span class="badge bg-danger">Expired</span>
+                                     {% else %}
+                                    <span class="badge bg-{% if booking.status == 'CONFIRMED' %}success {% else %}secondary{% endif %}">{{booking.status }}</span>
+                                  {% endif %}
+                                </td>
+                                <td>
+                                  {% if booking.payment and booking.payment.can_be_refunded %}
+                                    <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#refundModal{{ booking.payment.id }}"  > Refund </button>
+                                  {% elif booking.payment.status == "REFUNDED" %}
+                                    <span class="badge bg-info">Refunded</span>
+                                  {% else %}   
+                                     <span class="badge bg-success">{{ booking.payment.status}}</span>
+                                  {% endif %}                                      
+
+                                  <!-- {% if booking.payment %}
+                                    {% if booking.payment.status == 'SUCCESS' %} 
+                                          {% if booking.payment.created_at|timesince < '1 day' and booking.status != 'SAMPLE COLLECTED' %}
+                                              
+                                          {% else %}
+                                              <span class="badge bg-secondary ">No refund available</span>
+                                          {% endif %}
+                                    {% elif booking.payment.status == 'REFUNDED' %}
+                                      <span class="badge bg-info ">Refunded</span>
+                                    {% else %} 
+                                      <span class="badge bg-secondary">{{ booking.payment.status }}</span>
+                                    {% endif %}
+                                  {% else %}    
+                                     —
+                                  {% endif %} -->
+                                      
+                                </td>
+ {% if booking.payment and booking.payment.status == 'SUCCESS' %}                         
+<div class="modal fade" id="refundModal{{ booking.payment.id }}" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      
+      <form method="POST" action="{% url 'patient_refund_payment' booking.payment.id %}" id="refundForm">
+        {% csrf_token %}
+        
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Refund</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body">
+          <p>Are you sure you want to refund ₹ {{ booking.payment.amount }}?</p>
+          <small class="text-muted">Refund allowed within 24hrs only</small>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            Cancel
+          </button>
+          <button type="submit" class="btn btn-danger">
+            Confirm Refund
+          </button>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+{% endif %}
+                                <td>
+                                  {% if booking.status == 'CONFIRMED'  %}
+                                  <span class="badge bg-secondary "><i class="fa-solid fa-hourglass-half"></i> Sample Collection Pending</span>
+                                  {% elif booking.status in 'REPORT UPLOADED COMPLETED' %}
+                                  <a href="{{ booking.report.file.url }}" target="_blank" class="btn  btn-success "><i class="fa-solid fa-download"></i> Download Report</a>
+                                  {% elif booking.status == 'SAMPLE COLLECTED' %}
+                                  <span class="badge bg-primary "><i class="fa-solid fa-hourglass-half"></i> Report will be uploaded soon</span>
+                                  {% else %}
+                                    —
+                                  {% endif %}
+                                </td>
+                                <td >       
+                                    {% if booking.can_cancel  %}
+                                        <button  title="{{booking.id}}"
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#confirmcancel{{ booking.id }}"
+                                        class="btn btn-danger btn-sm">
+                                        Cancel
+                                      </button>
+                                      {% elif booking.status == 'CANCELLED'  %}
+                                      <span class="text-muted small">Cancelled</span>
+                                    {% else %}
+                                        <span class="text-muted small">Cancellation closed</span>
+                                    {% endif %}  
+                                    <!-- {{booking.expires_at}}                        -->
+                                    
+                                    
+                                </td>
+                                </tr>
+                             {% endfor %}
+                        </tbody>
+                    </table>
+
+              </div>
+              <!--End Bookings List-->
+                    <nav aria-label="Bookingnavigation" class="mt-3 bg-white ">
+                        <ul class="pagination justify-content-center mb-0">
+                            <li class="page-item {% if not bookings.has_previous %}disabled{% endif %}">
+                                <a class="page-link" href="{% if bookings.has_previous %}?page={{ bookings.previous_page_number }}{% else %}#{% endif %}">Previous</a>
+                            </li>
+                            {% for num in bookings.paginator.page_range %}
+                            <li class="page-item {% if num == bookings.number %}active{% endif %}" {% if num == bookings.number %}aria-current="page"{% endif %}>
+                                <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                            </li>
+                            {% endfor %}
+                            
+                            <li class="page-item {% if not bookings.has_next %}disabled{% endif %}">
+                                <a class="page-link" href="{% if bookings.has_next %}?page={{ bookings.next_page_number }}{% else %}#{% endif %}">Next</a>
+                            </li>
+                           
+                        </ul>
+                    </nav>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Bookings Section -->
+   <!-- Cancel Confirmation Modal -->
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+  {% for booking in bookings %}
+<div class="modal fade" id="confirmcancel{{ booking.id }}" tabindex="-1" aria-labelledby="confirmcancelLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmcancelLabel">Cancel Booking</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to cancel this booking?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <form method="post" action="{% url 'cancel_booking' booking.id  %}"  id="cancelForm">
+            {% csrf_token %}
+            <button type="submit" title="{% url 'cancel_booking' booking.id  %}" class="btn btn-danger">Yes, Cancel</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+{% endblock %} 

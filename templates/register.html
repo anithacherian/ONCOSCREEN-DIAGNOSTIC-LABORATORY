@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <!-- Register Section -->
+    <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Register</h2>
+        <p>Create an account to book cancer tests and access your reports securely</p>
+      </div><!-- End Section Title -->
+
+
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+          <div class="row justify-content-center">
+              <div class="col-lg-8 col-md-10 col-12">
+                {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">{{message}}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    {% endfor %}               
+                {% endif %}
+            <form  method="POST" role="form" class="php-email-form" >
+                
+                {% csrf_token %}                    
+                 <small class="text-danger">{{ form.non_field_errors }}</small>
+
+                
+              <div class="row">               
+                    <div class="col">
+                        <label for="loginusername" class="form-label text-secondary">First Name</label>
+                        {{ form.first_name }}
+                    </div>
+                    <div class="col">
+                        <label for="loginusername" class="form-label text-secondary">Last Name</label>
+                        {{ form.last_name }}
+                        
+                    </div>
+                </div>
+                <div class="row mt-3"> 
+                    <div class="col">
+                        <label for="loginusername" class="form-label text-secondary">Date of Birth</label>
+                         {{ form.dob }}
+                    </div>
+                    <div class="col">
+                        <label for="loginusername" class="form-label text-secondary">Mobile</label>
+                         {{ form.mobile }}
+                         <small class="text-danger">
+                            {{ form.mobile.errors }}
+                         </small>
+                        
+                    </div>
+                </div>
+                <div class="row mt-3"> 
+                    <div class="col-md-4">
+                        <label for="loginusername" class="form-label text-secondary">Email</label>
+                         {{ form.email }}
+                         <small class="text-danger">
+                            {{ form.email.errors }}
+                         </small>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="loginusername" class="form-label text-secondary">Password</label>
+                         {{ form.password }}
+                        
+                         <small class="text-danger">
+                            
+                            {{ form.password.errors }}
+                         </small>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="loginusername" class="form-label text-secondary">Confirm Password</label>
+                         {{ form.confirm_password }}
+                         <small class="text-danger">
+                            
+                            {{ form.confirm_password.errors  }}
+                         </small>
+                         
+                         
+                        
+                    </div>
+                </div>
+
+    
+              <div class="mt-3">
+                <div class="text-center"><button type="submit">Register</button></div>
+                <hr class="border-danger">
+                <div class="text-center">
+                    <label for="loginusername" class="text-secondary d-sm-block">Already having an account</label>
+                    <a href="/login" class="btn rounded-pill green_bg" style="padding: 10px 36px;">Login Now</a>
+                     <p><small>Lab Admin? Contact support</small></p>
+                </div>
+                
+    
+              </div>
+            </form>
+              </div><!-- End Register Form -->
+
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Register Section -->
+   
+
+{% endblock %} 

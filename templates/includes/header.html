@@ -1,0 +1,165 @@
+ {% load static %}
+ <header id="header" class="header sticky-top">
+
+    <div class="topbar d-flex align-items-center">
+      <div class="container d-flex justify-content-center justify-content-md-between">
+        <div class="contact-info d-flex align-items-center">
+          <i class="bi bi-envelope d-flex align-items-center"><a href="mailto:contact@example.com">contact@oncoscreen.com</a></i>
+          <i class="bi bi-phone d-flex align-items-center ms-4"><span>+91 987 654 3210</span></i>
+        </div>
+        <div class="social-links d-none d-md-flex align-items-center">
+          <a href="#" class="twitter"><i class="bi bi-twitter-x"></i></a>
+          <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+          <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+          <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
+        </div>
+      </div>
+    </div><!-- End Top Bar -->
+
+    <div class="branding d-flex align-items-center">
+
+      <div class="container position-relative d-flex align-items-center justify-content-between">
+        <a href="{% url 'home' %}" class="logo d-flex align-items-center me-auto">
+          <!-- Uncomment the line below if you also wish to use an image logo -->
+          <img src="{% static 'assets/img/oncoscreen.jpg' %}" alt="">
+          <h1 class="sitename">Oncoscreen</h1>
+        </a>
+
+        <nav id="navmenu" class="navmenu">
+          <ul>
+            {% if user.is_authenticated %}
+            {% if user.role == 'LAB_ADMIN' %}
+            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home<br></a></li>
+            <li class="dropdown"><a href="#" class="{% if request.resolver_match.url_name in 'staff_register staff_view_list' %} active {% endif %}"><span>Staff</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="{% url 'staff_register' %}">Register Staff</a></li>
+                <li><a href="{% url 'staff_view_list' %}">Staff Details</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="{% url 'all_categories_view' %}" class="{% if request.resolver_match.url_name in 'all_categories_view packages_detail' %} active {% endif %}"><span>Packages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                {% for category in menu_categories %}
+                <li><a href="{% url 'category_packages' category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li><a href="{% url 'lab_booking_list' %}" class="{% if request.resolver_match.url_name == 'lab_booking_list' %}active{% endif %}">Booking<br></a></li>
+            <li class="dropdown"><a href="#" class="{% if request.resolver_match.url_name in 'lab_view_package create_package lab_test_list lab_test_create slot_list create_slot' %} active {% endif %}"><span>Manage Package</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                <li><a href="{% url 'lab_view_package' %}">View Packages</a></li>
+                <li><a href="{% url 'create_package' %}">Add Packages</a></li>
+                <li><a href="{% url 'lab_test_list' %}">View Lab Test</a></li>
+                <li><a href="{% url 'lab_test_create' %}">Add Lab Test</a></li>
+                <li><a href="{% url 'slot_list' %}">View Test Slot</a></li>
+                <li><a href="{% url 'create_slot' %}">Add Test Slot</a></li>
+              </ul>
+            </li>
+            <li><a href="{% url 'lab_payment_list' %}" class="{% if request.resolver_match.url_name == 'lab_payment_list' %}active{% endif %}">Payment<br></a></li>
+            <li class="dropdown"><a href="{% url 'lab_dashboard' %}" class="{% if request.resolver_match.url_name == 'lab_dashboard' %}active{% endif %}"><span>Dashboard</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                
+                <li><a href="{% url 'change_password' %}">Change Password</a></li>
+                <li>
+                  <form method="post" action="{% url 'logout' %}" >
+                    {% csrf_token %}
+                    <button type="submit" class="lablogout"  >Logout</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+            
+            {% elif user.role == 'STAFF' %}
+            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home<br></a></li>
+
+            <!-- <li><a href="{% url 'staff_dashboard' %}" class="{% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}">Dashboard<br></a></li> -->
+            <li><a href="{% url 'lab_booking_list' %}" class="{% if request.resolver_match.url_name == 'lab_booking_list' %}active{% endif %}">Booking<br></a></li>
+            <li class="dropdown"><a href="{% url 'staff_dashboard' %}" class="{% if request.resolver_match.url_name == 'staff_dashboard' %}active{% endif %}"><span>Dashboard</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                
+                <li><a href="{% url 'change_password' %}">Change Password</a></li>
+                <li>
+                  <form method="post" action="{% url 'logout' %}" >
+                    {% csrf_token %}
+                    <button type="submit" class="lablogout"  >Logout</button>
+                  </form>
+                </li>
+              </ul>
+            </li>            
+            {% elif user.role == 'PATIENT' %}
+            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home<br></a></li>
+            <li class="dropdown" ><a href="{% url 'all_categories_view' %}" class="{% if request.resolver_match.url_name in 'all_categories_view packages_detail' %}active{% endif %}"><span>Packages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                {% for category in menu_categories %}
+                <li><a href="{% url 'category_packages' category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li><a href="{% url 'my_bookings' %}"  class="{% if request.resolver_match.url_name == 'my_bookings' %}active{% endif %}" >My Bookings<br></a></li>
+            <!--<li><a href="{% url 'patient_dashboard' %}" class="{% if request.resolver_match.url_name == 'patient_reports' %}active{% endif %}">My Report </a></li> -->
+            <li><a href="{% url 'patient_profile' %}" class="{% if request.resolver_match.url_name in 'patient_profile edit_patient_profile' %} active {% endif %}">Profile</a></li>
+            <li class="dropdown" >
+              <a href="{% url 'my_notifications' %}" class="{% if request.resolver_match.url_name in 'all_categories_view packages_detail' %}active{% endif %}"><span class="fa-solid fa-bell"></span> <i class="bi bi-chevron-down toggle-dropdown"></i>
+               
+              {% if notification_count > 0 %}
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  {{ notification_count }}
+                </span>
+              {% endif %}            
+              </a>
+              <ul style="left: -116px;">
+                {% if notifications %}
+                  {% for note in notifications %}
+                    <li>
+                      <a class="dropdown-item small" href="{% url 'my_notifications' %}"> 🔔 {{ note.message }} </a>
+                    </li>
+                  {% endfor %}
+                {% else %}
+                  <li class="text-muted text-center">
+                    No new notifications
+                  </li>
+                {% endif %}
+              </ul>
+            </li>
+            <li class="dropdown" ><a href="{% url 'patient_dashboard' %}" class="{% if request.resolver_match.url_name == 'patient_dashboard' %} active {% endif %}">Dashboard <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                
+                <li><a href="{% url 'change_password' %}">Change Password</a></li>
+                <li>
+                  <form method="post" action="{% url 'logout' %}" >
+                    {% csrf_token %}
+                    <button type="submit" class="lablogout"  >Logout</button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+
+            {% endif %}
+           {% else %}
+            <li><a href="{% url 'home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home<br></a></li>
+            <li><a href="{% url 'about' %}" class="{% if request.path == '/about' %}active {% endif %}">About</a></li>
+            <li><a href="{% url 'services' %}" class="{% if request.path == '/services' %}active {% endif %}">Services</a></li>
+            <li class="dropdown"><a href="{% url 'all_categories_view' %}" class="{% if request.resolver_match.url_name == 'all_categories_view' %}active{% endif %}"><span>Packages</span> <i class="bi bi-chevron-down toggle-dropdown"></i></a>
+              <ul>
+                {% for category in menu_categories %}
+                <li><a href="{% url 'category_packages' category.id %}">{{category.name}}</a></li>
+                {% endfor %}
+              </ul>
+            </li>
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'contact' %}" class="{% if request.path == '/contact' %}active {% endif %}">Contact</a></li>
+            {% endif %}
+          </ul>
+          <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+        </nav>
+        {% if user.is_authenticated %}
+        {% if user.role == 'PATIENT' %}
+
+        <a class="cta-btn d-none d-sm-block " href="{% url 'book_any_package' %}">Book Test</a>
+         {% endif %}
+         {% endif %}
+
+      </div>
+
+    </div>
+
+  </header>

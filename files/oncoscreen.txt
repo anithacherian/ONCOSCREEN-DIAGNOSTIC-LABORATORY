@@ -1,0 +1,57 @@
+LABADMIN
+-------------
+labadmin@oncoscreen.com
+Diagnostics@1234
+Newlab@123
+_______________________________________________
+
+PATIENT
+-------------
+anitha@gmail.com
+Kevin@345
+kevin@gmail.com
+Kevin@123
+keziah@gmail.com
+Keziah@456
+_______________________________________________
+
+STAFF
+-------------
+labstaff@gmail.com
+Teststaff@123
+
+
+newstaff@gmail.com
+Teststaff@123
+_______________________________________________
+
+6527 6589 0000 1005
+
+
+PCOS history
+
+Irregular cycles
+
+Weight gain
+
+Thyroid disorders
+
+18–30 years: For cycle irregularities
+
+30–45 years: Annual screening
+
+45+ years: Menopause evaluation
+
+_______________________________________________
+http://127.0.0.1:8000/labadmin/register/ - labadmin register url
+	will redirect to login if labadmin already exists
+_______________________________________________
+
+
+
+
+
+
+
+
+

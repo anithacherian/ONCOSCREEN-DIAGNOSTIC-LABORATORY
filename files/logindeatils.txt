@@ -1,0 +1,209 @@
+labadmin@oncoscreen.com
+Diagnostics@1234
+Newlab@123
+
+from bookingplatform.models import Payment,Booking
+Payment.objects.values('id','status')
+
+anitha@gmail.com
+Kevin@345
+kevin@gmail.com
+Kevin@123
+keziah@gmail.com
+Keziah@456
+Lab admin regiter
+http://127.0.0.1:8000/labadmin/register/
+
+staff@gmail.com
+Newstaff@345
+
+
+newstaff@gmail.com
+Teststaff@123
+
+Razorpay:anitha.cher20@gmail.com
+Akeziah@3018
+https://razorpay.com/docs/payments/payment-gateway/ecommerce-plugins/build-your-own?search-string=order%20form%20server#to-verify-the-razorpay-signature-returned-to-you
+6527 6589 0000 1005
+document.getElementById('id_package')
+order_SENpJsmcBEhvrJ
+pay_SENpcU6e3UnzkP
+d7bcfee1823e0ecc193a7d0b60a6ca14a166cbe1efe054c80f6a67feed173df4
+staff-edit,delete by lab admin
+
+SHARED Resource
+from bookingplatform.models import Notification
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+user = User.objects.get(email="anitha@gmail.com")
+
+Notification.objects.filter(user=user)
+
+Multiple patients can be booked in the same time slot
+
+Examples:
+Blood collection
+Urine sample
+Basic vitals
+EXCLUSIVE Resource
+Only ONE patient per slot
+
+Examples:
+MRI
+CT Scan
+Mammography
+Specialized machine
+resource_type = 'EXCLUSIVE'
+max_bookings = 1
+
+Follow-up and Monitoring Packages
+fa-solid fa-flask-vial
+These packages are designed for individuals with known chronic conditions or those in post-treatment recovery to ensure long-term stability and catch any recurrence early. They focus on tracking specific biomarkers (like tumor markers for cancer survivors) and organ performance (such as LFTs for those on long-term medication).
+	Newborn & Pediatric Screening
+fa-solid fa-baby
+This essential screening is performed shortly after birth to identify metabolic, hormonal, or genetic disorders that are not immediately apparent. Early detection of conditions like congenital hypothyroidism or phenylketonuria (PKU) can prevent serious developmental delays and lifelong health complications
+	Advanced Genomic Testing Package
+fa-solid fa-virus-covid
+Going beyond basic risk assessment, this package uses precision oncology tools to analyze the molecular signature of cells. It can identify specific genetic alterations—such as mutations or gene rearrangements—that might drive disease progression.
+	Genetic Risk Assessment Package
+fa-solid fa-dna
+This package evaluates your DNA to identify inherited gene mutations that may increase your susceptibility to specific diseases. It is particularly valuable for individuals with a strong family history of conditions like breast, ovarian, or colorectal cancer.
+	Tumor Marker Package
+fa-solid fa-location-dot
+This specialized blood-based screening measures specific proteins or substances produced by cancer cells or the body in response to cancer. It includes markers like CEA,  AFP (liver), and CA 19.9 (pancreatic). While not a definitive diagnosis on their own, these markers help doctors identify high-risk areas that require further imaging or biopsy.While not a definitive diagnosis on their own, these markers help doctors identify high-risk areas that require further imaging or biopsy.
+	Cancer Screening Package
+fa-solid fa-vial-virus
+A Cancer Screening Package is often an upgraded version of a basic checkup. While it includes all the standard tests to check your general health, it adds specific "cancer markers" and advanced imaging to detect malignancies early. Often includes PSA (Prostate-Specific Antigen), chest X-rays, and abdominal ultrasounds. Typically features mammography for breast health, Pap smears for cervical screening, and CA-125 for ovarian markers
+	Basic Health Checkup Package
+fa-solid fa-heart-pulse
+This package provides a baseline assessment of your overall health, focusing on vital organ functions and metabolic health. It typically includes a Complete Blood Count (CBC), blood sugar levels (Fasting/HbA1c), lipid profile for heart health, and basic Liver and Kidney function tests. It is ideal for annual monitoring and identifying silent risks like anemia or early-stage diabetes
+
+
+
+def save(self, *args, **kwargs):
+    if not self.staff_id:
+        last_staff = StaffProfile.objects.order_by('id').last()
+        next_id = 1 if not last_staff else last_staff.id + 1
+        self.staff_id = f"STF-{next_id:04d}"
+    super().save(*args, **kwargs)
+
+Age 40–44: 
+Option to start annual mammograms.
+Age 45–54: 
+Annual mammograms recommended.
+Age 55+: 
+Transition to biennial (every 2 years) screening or continue annual.
+Age 75+: 
+Decisions should be made in consultation with a healthcare provider, especially if life expectancy is at least 10 years. 
+
+Booking Process
+___________
+
+Search tests →
+Select test(s) →
+Choose date/time →
+Select home collection or visit →
+Make payment →
+Get confirmation →
+Download report
+
+
+Booking logic (easy rule)
+When user selects a test:
+System checks:
+Patient DOB
+Test’s allowed age range
+Example:
+Newborn screening → age ≤ 1 year
+Adult cancer screening → age ≥ 18
+
+Slot add by labadmin
+ 
+Step 1️⃣ Lab booking list-completed
+Step 2️⃣ Sample collected-completed
+Step 3️⃣ Upload report-completed
+Step 4️⃣ Completed status-completed
+notification-website and terminal
+email notiication pending
+
+👉 After lab workflow is stable, we do:
+
+Step 5️⃣ Create Payment model-completed
+Step 6️⃣ Move payment logic into it-completed
+Step 7️⃣ Admin & Lab Admin payment monitoring
+
+------------------------------------------------
+Complete Blood Count (CBC): Screens for anemia, infections, and immune system health.
+Lipid Profile: Measures cholesterol (HDL/LDL) and triglycerides to assess heart disease risk.
+Blood Sugar (Fasting & HbA1c): Detects prediabetes and diabetes by measuring glucose levels.
+Liver Function Test (LFT): Evaluates enzymes and proteins to check for liver damage or fatty liver.
+Kidney Function Test (KFT): Checks urea and creatinine to ensure the kidneys are filtering waste properly.
+Thyroid Profile (T3, T4, TSH): Monitors the metabolism and energy levels.
+Urine Analysis: Screens for urinary tract infections (UTIs) and early signs of kidney issues. 
+
+A Complete Blood Count (CBC) is one of the most common and essential blood tests used in modern medicine to evaluate your overall health. Think of it as a "health snapshot" that counts and examines the three main types of cells in your blood: red cells, white cells, and platelets
+
+Risk Factors & Symptoms (When to get tested)
+Persistent Fatigue: Often linked to low Hemoglobin or Iron.
+Frequent Infections: May indicate a low WBC count.
+Slow Healing: If cuts don't stop bleeding, your Platelet count may be low.
+Unexplained Weight Loss: Can be a signal for more serious underlying blood conditions.
+2. Age-Specific Recommendations
+Infants/Children: 
+Often tested to check for growth-related iron deficiency.
+Teenagers/Young Adults: 
+Screened for lifestyle-induced anemia or "Mono" (viral infections).
+Seniors (60+): 
+Monitored for bone marrow health and chronic inflammatory markers.
+3. Gender-Specific Considerations
+Females: Usually have lower baseline Hemoglobin than males due to menstrual cycles; regular checks are vital to prevent Iron Deficiency Anemia.
+Males: Higher Hemoglobin levels are normal, but excessively high levels may indicate heart or smoking-related issues.
+4. Cost & Report Dynamics
+Cost Range: While a standalone CBC is ₹200–₹500, it is almost always included in a Basic Full Body Package costing ₹700–₹1,200.
+Report Speed: Most labs use automated cell counters, meaning your report is often ready within 4 hours of the sample reaching the lab.
+---------------------
+A Lipid Profile (or lipid panel) is a comprehensive blood test that measures various fat molecules (lipids) in the blood to assess cardiovascular health and the risk of heart disease or stroke. 
+
+Lifestyle Factors: A diet high in saturated/trans fats, lack of regular physical activity, and tobacco smoking (which lowers "good" HDL cholesterol).
+Obesity: Having a Body Mass Index (BMI) of 30 or higher significantly increases the likelihood of high LDL ("bad" cholesterol).
+Existing Health Conditions: Individuals with Type 2 Diabetes, high blood pressure (hypertension), or chronic kidney disease are at much higher risk for lipid imbalances.
+
+Universal Screening: All children should have their first lipid profile done once between the ages of 9 and 11.
+Second Check: A second universal screening should occur between 17 and 21.
+Early Risk: Children with a family history of early heart disease should be tested as early as age 2.
+Young Adults (Ages 20–39)
+Baseline: If you haven't been tested as a teen, get a baseline profile at age 20.
+Frequency: If results are normal and there are no new risk factors, you should repeat the test every 4 to 6 years.
+Middle-Aged Adults (Ages 40–65)
+Routine: This is the highest risk period for plaque buildup in arteries. Testing is recommended annually or every 2 years.
+Risk Calculation: Doctors use these results to calculate your 10-year cardiovascular risk score.
+Seniors (Ages 65+ )
+Annual Checks: Regular monitoring is essential to manage medication (like statins) and prevent late-life cardiac events.
+
+
+--------------------
+Breast Cancer Screening is a preventive health process used to detect early signs of cancer in the breast tissue before any physical symptoms, such as lumps, appear. Early detection is critical as it significantly increases the success rate of treatment and long-term survival.
+
+Mammography (Gold Standard): A low-dose X-ray that can identify tumours too small to be felt.
+Breast Ultrasound (Sono-mammography): Uses sound waves to check if a lump is a solid mass or a fluid-filled cyst; often used for women with dense breast tissue.
+Breast MRI: A highly sensitive imaging test using magnets, typically reserved for high-risk individuals or to supplement mammograms.
+
+Genetic Mutations: The most significant risk is inherited mutations in the BRCA1 and BRCA2 genes. Women with these mutations have a significantly higher lifetime risk.
+Family History: Your risk increases if a first-degree relative (mother, sister, or daughter) has had breast or ovarian cancer.
+Breast Density: Women with dense breast tissue (more glandular/fibrous tissue than fatty tissue) have a higher risk, and it also makes mammograms harder to read.
+
+Ages 20 – 39: Awareness Phase
+Self-Exams: Women should be "breast aware." If you notice a change in shape, skin texture, or a lump, see a doctor immediately.
+Clinical Exam: A physical exam by a doctor every 1–3 years is recommended.
+High-Risk Exception: If you have a known genetic mutation (BRCA), screening with Breast MRI often begins at age 25–30.
+Ages 40 – 49: The Decision Window
+Choice: Many guidelines state women should have the choice to start annual mammograms at age 40.
+New Standards: Most modern medical groups now strongly recommend starting every other year at age 40 to catch aggressive cancers early.
+Ages 50 – 74: The Critical Phase
+Mammography: This is the peak age for risk. A mammogram is recommended every 1 to 2 years.
+Consistency: Missing a cycle increases the chance of a cancer being found at a later, harder-to-treat stage.
+Ages 75+: The Individual Phase
+Evaluation: Screening usually continues as long as a woman is in good health and has a life expectancy of 10 years or more.
+Stopping: If the risks of the screening process (and potential follow-up surgeries) outweigh the benefits, your doctor may suggest stopping.
+

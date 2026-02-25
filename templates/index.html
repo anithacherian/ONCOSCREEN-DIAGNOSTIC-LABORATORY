@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}               
+        {% endif %}
+
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section light-background">
+
+      <img src="{% static 'assets/img/hero-bg.jpg' %}" alt="" data-aos="fade-in">
+
+      <div class="container position-relative">
+
+        <div class="welcome position-relative" data-aos="fade-down" data-aos-delay="100">
+          <h2>WELCOME TO ONCOSCREEN</h2>
+          <p>Early Detection. Better Decisions. Healthier Lives</p>
+        </div><!-- End Welcome -->
+
+        <div class="content row gy-4">
+          <div class="col-lg-4 d-flex align-items-stretch">
+            <div class="why-box" data-aos="zoom-out" data-aos-delay="200">
+              <h3>Why Choose Oncoscreen?</h3>
+              <p>
+                Cancer detection at an early stage can save lives. OncoScreen is designed to support healthcare professionals by providing a simple, secure, and organized platform for managing cancer screening data efficiently.
+              </p>
+              <div class="text-center">
+                <a href="#about" class="more-btn"><span>Learn More</span> <i class="bi bi-chevron-right"></i></a>
+              </div>
+            </div>
+          </div><!-- End Why Box -->
+
+          <div class="col-lg-8 d-flex align-items-stretch">
+            <div class="d-flex flex-column justify-content-center">
+              <div class="row gy-4">
+
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box" data-aos="zoom-out" data-aos-delay="300">
+                    <i class="bi bi-clipboard2-pulse"></i>
+                    <h4>Early Screening Support</h4>
+                    <p>Helps record and monitor screening details to identify potential risks at an early stage</p>
+                  </div>
+                </div><!-- End Icon Box -->
+
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box" data-aos="zoom-out" data-aos-delay="400">
+                    <i class="bi bi-file-medical"></i>
+                    <h4>Patient-Centric Records</h4>
+                    <p>Maintain complete screening history and patient profiles in one secure system.</p>
+                  </div>
+                </div><!-- End Icon Box -->
+
+                <div class="col-xl-4 d-flex align-items-stretch">
+                  <div class="icon-box" data-aos="zoom-out" data-aos-delay="500">
+                    <i class="bi bi-inboxes"></i>
+                    <h4>Efficient Workflow</h4>
+                    <p>Streamlines data entry, review, and follow-up processes for healthcare teams.</p>
+                  </div>
+                </div><!-- End Icon Box -->
+
+              </div>
+            </div>
+          </div>
+        </div><!-- End  Content-->
+
+      </div>
+
+    </section><!-- /Hero Section -->
+
+
+
+    <!-- Stats Section -->
+    <section id="stats" class="stats section light-background">
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+            <i class="fa-solid fa-1"></i>
+            <div class="stats-item">
+              <i class="fa-solid fa-vial labicon"></i>
+              <p>Sample Collection</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+            <i class="fa-solid fa-2"></i>
+            <div class="stats-item">
+              <i class="fa-solid fa-flask labicon"></i>
+              <p>Pathological Processing</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+            <i class="fa-solid fa-3"></i>
+            <div class="stats-item">
+              <i class="fa-solid fa-microscope labicon"></i>
+              <p>Genetic Analysis</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+          <div class="col-lg-3 col-md-6 d-flex flex-column align-items-center">
+            <i class="fa-solid fa-4"></i>
+            <div class="stats-item">
+              <i class="fa-solid fa-file-lines labicon"></i>
+              <p>Clinical Reporting</p>
+            </div>
+          </div><!-- End Stats Item -->
+
+        </div>
+
+      </div>
+
+    </section><!-- /Stats Section -->
+
+    <!-- Process Section -->
+    <section id="services" class="services section">
+
+      <!-- Services Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Services</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+      </div><!-- End Services Title -->
+
+      <div class="container">
+
+        <div class="row gy-4">
+          {% for  categorys in categorys %}
+
+            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+              <div class="service-item  position-relative">
+                <div class="icon">
+                  <i class="{{categorys.icon}}"></i>
+                </div>
+                <a href="{% url 'category_packages' categorys.id %}" class="stretched-link">
+                  <h3>{{categorys.name}}</h3>
+                </a>
+                <p>{{categorys.description|truncatechars:126}}</p>
+              </div>
+            </div><!-- End Service Item -->
+
+          {% endfor %}
+
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Services Section -->
+
+
+
+{% endblock %} 

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Notifications Page -->
+    <div class="page-title" data-aos="fade">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Notifications</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Notifications Page -->
+
+
+
+    <!-- Notifications Section -->
+   <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Notifications</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}               
+        {% endif %}
+
+        <div class="row gy-2  justify-content-center">
+
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+            <ul class="list-group notification">
+              {% for n in notifications %}
+                <li class="list-group-item {% if not n.is_read %}fw-bold{% endif %}">
+                    {{ n.message }}
+                    <small class="text-muted d-block">
+                        {{ n.created_at|timesince }} ago
+                    </small>
+                </li>
+              {% empty %}
+                <li class="list-group-item text-muted">No notifications</li>
+              {% endfor %}
+            </ul>
+          </div><!-- End Notifications -->
+          <nav aria-label="Notificationsnavigation" class="mt-3 bg-white ">
+            <ul class="pagination justify-content-center mb-0">
+                <li class="page-item {% if not notifications.has_previous %}disabled{% endif %}">
+                    <a class="page-link" href="{% if notifications.has_previous %}?page={{ notifications.previous_page_number }}{% else %}#{% endif %}">Previous</a>
+                </li>
+                {% for num in notifications.paginator.page_range %}
+                <li class="page-item {% if num == notifications.number %}active{% endif %}" {% if num == notifications.number %}aria-current="page"{% endif %}>
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endfor %}
+                
+                <li class="page-item {% if not notifications.has_next %}disabled{% endif %}">
+                    <a class="page-link" href="{% if notifications.has_next %}?page={{ notifications.next_page_number }}{% else %}#{% endif %}">Next</a>
+                </li>
+                
+            </ul>
+          </nav>
+
+
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Notifications Section -->
+   
+
+{% endblock %} 

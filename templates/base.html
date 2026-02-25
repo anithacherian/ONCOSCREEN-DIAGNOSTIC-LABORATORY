@@ -1,0 +1,277 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>{% block title %}Oncoscreen | Early Cancer Screening & Diagnostic Platform {% endblock %}</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="{% static 'assets/img/favicon.png' %}" rel="icon">
+  <link href="{% static 'assets/img/apple-touch-icon.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'assets/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/aos/aos.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+  <link href="{% static 'assets/vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="{% static 'assets/css/main.css' %}" rel="stylesheet">
+
+  
+</head>
+
+<body class="index-page">
+
+  {% include 'includes/header.html' %}
+
+  <main class="main">
+
+    {% block content %}
+    {% endblock %}
+
+
+
+  </main>
+
+  <footer id="footer" class="footer light-background">
+
+    {% include 'includes/footer.html' %}
+
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'assets/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/aos/aos.js' %}"></script>
+  <script src="{% static 'assets/vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script src="{% static 'assets/vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'assets/vendor/swiper/swiper-bundle.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'assets/js/main.js' %}"></script>
+   <script>
+    // Initialize all tooltips on the page
+    const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+  </script>
+  <!-- BOoking form collection type -->
+   <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const packageSelect = document.getElementById('id_package');
+            const collectionWrapper = document.getElementById('collection-wrapper');
+            const textMuted = document.getElementById('text-muted');
+
+            if (!packageSelect) return;
+
+            // 🔑 map injected from Django
+            const packageHomeMap = {{ package_home_map|default:"{}"|safe }};
+            // alert(packageHomeMap)
+            function updateCollectionType() {
+
+                const pkgId = packageSelect.value;
+
+                // nothing selected yet → allow both
+                if (!pkgId || !(pkgId in packageHomeMap)) {
+                    collectionWrapper.style.display = 'block';
+                    textMuted.style.display = 'none';
+
+                    document
+                      .querySelectorAll('#collection-wrapper input[type="radio"]')
+                      .forEach(r => r.disabled = false);
+
+                    return;
+                }
+
+                const homeAllowed = packageHomeMap[pkgId];
+                const radios = document.querySelectorAll(
+                    '#collection-wrapper input[type="radio"]'
+                );
+
+                if (homeAllowed === 'NO') {
+
+                    radios.forEach(radio => {
+                        if (radio.value === 'HOME') {
+                            radio.checked = false;
+                            radio.disabled = true;
+                            // if(radio.parentElement.tagName === 'LABEL') radio.parentElement.style.opacity = '0.5';
+                        }
+                        if (radio.value === 'LAB') {
+                            radio.checked = true;
+                            radio.disabled = false;
+                        }
+                    });
+
+                    collectionWrapper.style.display = 'none';
+                    textMuted.style.display = 'block';
+
+                } else {
+
+                    radios.forEach(radio => {
+                        radio.disabled = false;
+                    });
+
+                    collectionWrapper.style.display = 'block';
+                    textMuted.style.display = 'none';
+                }
+            }
+
+            // 🔁 react immediately when dropdown changes
+            packageSelect.addEventListener('change', updateCollectionType);
+
+            // 🔁 enforce once on page load
+            updateCollectionType();
+     });
+  </script>
+
+
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const dateInput = document.getElementById('id_preferred_date');
+            const slotContainer = document.getElementById('slot-container');
+
+            if (!dateInput || !slotContainer) return;
+
+            dateInput.addEventListener('change', function () {
+                // 🔥 Remove old slots completely
+                slotContainer.innerHTML = '';
+
+                // Optional UX hint
+                slotContainer.innerHTML = '<p class="text-muted">Please click "Check Slot Availability"</p>';
+            });
+        });
+        </script>
+
+        <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                  const slotContainer = document.getElementById('slot-container');
+                  const collectionRadios = document.querySelectorAll(
+                      '#collection-wrapper input[type="radio"]'
+                  );
+
+                  if (!slotContainer || !collectionRadios.length) return;
+
+                  function clearSlotsOnCollectionChange() {
+                      // 🔥 uncheck any previously selected slot
+                      document.querySelectorAll('input[name="slot"]').forEach(r => {
+                          r.checked = false;
+                      });
+
+                      // 🔥 clear slot DOM
+                      slotContainer.innerHTML =
+                          '<p class="text-muted">Please click "Check Slot Availability"</p>';
+                  }
+
+                  collectionRadios.forEach(radio => {
+                      radio.addEventListener('change', clearSlotsOnCollectionChange);
+                  });
+              });
+          </script>
+
+
+
+
+
+
+
+   <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const bookingId = "{{ booking.id }}";
+
+      var options = {
+        key: "{{ razorpay_key }}",
+        amount: parseInt("{{ booking.amount }}") * 100, // Safe integer conversion
+        currency: "INR",
+        order_id: "{{ order_id }}",
+        name: "OncoScreen Diagnostics",
+        description: "Test Booking Payment",
+
+        handler: function (response) {
+          // ✅ Backend Verification
+          fetch(`/booking/payment_success/${bookingId}/`, {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": "{{ csrf_token }}",
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              razorpay_payment_id: response.razorpay_payment_id,
+              razorpay_order_id: response.razorpay_order_id,
+              razorpay_signature: response.razorpay_signature
+            })
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "ok") {
+                // Success! Take them to their list
+                window.location.href = "{% url 'my_bookings' %}";
+            } else {
+                alert("Payment verification failed: " + (data.error || "Unknown error"));
+            }
+          });
+        },
+
+        modal: {
+          ondismiss: function () {
+            // ❌ Don't redirect immediately. 
+            // Just log it or show a message so they can try again.
+            console.log("Payment window closed by user");
+          }
+        },
+        // Helpful for debugging in Test Mode
+        theme: { "color": "#3399cc" }
+      };
+
+      var rzp = new Razorpay(options);
+
+      document.getElementById("pay-btn").onclick = function (e) {
+        e.preventDefault();
+        rzp.open();
+      };
+    });
+</script>
+                    <script>
+                      document.addEventListener("DOMContentLoaded", function () {
+                      const designation = document.getElementById("id_designation");
+                      const otherField = document.getElementById("id_other_designation");
+                      const wrapper = document.getElementById("otherDesignationWrapper");
+
+                      function toggleOtherField() {
+
+                      if (designation.value === "OTHER") {
+                        wrapper.style.display = "block";
+                        otherField.setAttribute('required','required')
+                      } else {
+                        wrapper.style.display = "none";
+                        otherField.removeAttribute('required','required')
+                        otherField.value = "";
+                      }
+                    }
+
+                    toggleOtherField(); // initial load
+                    designation.addEventListener("change", toggleOtherField);
+                  });
+                    </script>
+
+
+</body>
+
+</html>

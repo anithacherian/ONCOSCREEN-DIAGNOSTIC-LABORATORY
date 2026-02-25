@@ -1,0 +1,445 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load currency_filters %}
+
+{% block content %}
+    <!-- Packages Detail Page -->
+    <div class="page-title" data-aos="fade">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li><a href="{% url 'category_packages' category.id %}">{{category.name}}</a></li>
+            <li class="current">{{package.name}}</li>
+          </ol>
+        </div>
+      </nav>
+
+
+    <!-- Packages Detail Section -->
+    <section id="departments" class="departments section">
+
+
+
+      <!-- Package Title -->
+      <div class="container section-title mt-4" data-aos="fade-up">
+        <h3>{{package.name}}</h3>
+
+      </div><!-- End Package Title -->
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <div class="col-lg-3">
+            <ul class="nav nav-tabs flex-column">
+              <li class="nav-item">
+                <a class="nav-link active show" data-bs-toggle="tab" href="#intro-{{package.id}}">{{package.intro_heading}} </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#test-{{package.id}}">Tests included</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#risk-{{package.id}}">Risk Factors</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#age-{{package.id}}">Age Recommendation</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-9 mt-4 mt-lg-0">
+            <div class="tab-content">
+              <div class="tab-pane active show" id="intro-{{package.id}}">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>{{package.intro_heading}}</h3>
+                    <p class="fst-italic">
+                      {{package.intro_description|safe }}
+                    </p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>{{package.name}}</h4>
+                            <p><b>Gender:</b> {{ package.gender |title  }}</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in {{package.report_time}}</p>
+                            <h5 class="social text-primary">{{package.price|inr_format }} </h5>
+                            <a href="{% url 'book_any_package' pk=package.id %}" class="cta-btn d-none d-sm-block mt-2">Book Now</a>
+
+                        </div>
+                        </div>
+                    </div><!-- End Team Member -->
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="test-{{package.id}}">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    {% for test in package.tests.all %}
+                    <h5>{{ test.name }}</h5>
+                    <p>{{ test.description }}</p>
+                    {% empty %}
+                    <p>No tests added for this package.</p>
+                    {% endfor %}
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>{{package.name}}</h4>
+                            <p><b>Gender:</b> {{ package.gender |title  }}</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in {{package.report_time}}</p>
+                            <h5 class="social text-primary">{{package.price|inr_format }} </h5>
+                            <a href="{% url 'book_any_package' pk=package.id %}" class="cta-btn d-none d-sm-block mt-2">Book Now</a>
+                        </div>
+                        </div>
+                    </div><!-- End Team Member -->
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="risk-{{package.id}}">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                     {{package.risk_factors | safe}}
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>{{package.name}}</h4>
+                            <p><b>Gender:</b> {{ package.gender |title  }}</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in {{package.report_time}}</p>
+                            <h5 class="social text-primary">{{package.price|inr_format }} </h5>
+                            <a href="{% url 'book_any_package' pk=package.id %}" class="cta-btn d-none d-sm-block mt-2">Book Now</a>
+                        </div>
+                        </div>
+                    </div><!-- End Team Member -->
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="age-{{package.id}}">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                     {{package.age_recommendation | safe}}
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>{{package.name}}</h4>
+                            <p><b>Gender:</b> {{ package.gender |title  }}</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in {{package.report_time}}</p>
+                            <h5 class="social text-primary">{{package.price|inr_format }} </h5>
+                            <a href="{% url 'book_any_package' pk=package.id %}" class="cta-btn d-none d-sm-block mt-2">Book Now</a>
+                        </div>
+                        </div>
+                    </div><!-- End Team Member -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+   
+
+      <!-- Cervical Title -->
+       <!-- <div class="container section-title mt-4" data-aos="fade-up">
+        <h3>Cervical Cancer Screening</h3>
+
+      </div> 
+      End Cervical Title
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <div class="col-lg-3">
+            <ul class="nav nav-tabs flex-column">
+              <li class="nav-item">
+                <a class="nav-link active show" data-bs-toggle="tab" href="#cervical-tab-1">Breast Cancer </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#cervical-tab-2">Tests included</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#cervical-tab-3">Frequency Recommendations</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#cervical-tab-4">Self-Collection</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#cervical-tab-5">Risk Factors</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-9 mt-4 mt-lg-0">
+            <div class="tab-content">
+              <div class="tab-pane active show" id="cervical-tab-1">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Cervical Screening</h3>
+                    <p class="fst-italic">Cervical cancer screening detects precancerous changes or early-stage cancer in the cervix, often caused by high-risk Human Papillomavirus (HPV)</p>
+                    <p>Primary methods include the HPV test (checking for high-risk HPV DNA/RNA) and the Papanicolaou (Pap) test (examining cells for abnormalities).</p>
+                    <p>About 70% to 80% of breast cancers begin in the milk ducts, about 10% to 15% begin in the lobules and a few begin in other breast tissues</p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Cervical Screening</h4>
+                            <p><b>Gender:</b> Female</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 3551 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>
+                    End Team Member
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="cervical-tab-2">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>HPV Test</h3>
+                    <p class="fst-italic">Tests for high-risk types of HPV, often recommended as a primary screen every 5 years for women 30 and older.</p>
+                    <h3>Pap Test (Pap Smear)</h3>
+                    <p class="fst-italic">Examines cells for abnormal, potentially precancerous changes, typically every 3 years.</p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Cervical Screening</h4>
+                            <p><b>Gender:</b> Female</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 3551 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>
+                    End Team Member 
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="cervical-tab-3">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Age 21-29</h3>
+                    <p class="fst-italic">Pap test every 3 years.</p>
+                    <h3>Age 30-65</h3>
+                    <p>HPV test alone every 5 years, OR HPV/Pap co-test every 5 years, OR Pap test alone every 3 years. </p>
+                    <h3>Over 65</h3>
+                    <p>May stop screening if prior tests were consistently normal. </p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Cervical Screening</h4>
+                            <p><b>Gender:</b> Female</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 3551 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>
+                     End Team Member
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="cervical-tab-4">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Self-Collection</h3>
+                    <p class="fst-italic">In many areas, individuals can now opt to self-collect a sample, which is as effective as a clinician-collected sample, for HPV testing.</p>
+                    <h3>Vaccinated Individuals</h3>
+                    <p>Even if you have received the HPV vaccine, regular screening is still required as the vaccine does not protect against all high-risk HPV types.</p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Cervical Screening</h4>
+                            <p><b>Gender:</b> Female</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 3551 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>
+                   # End Team Member 
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="cervical-tab-5">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Sexual History</h3>
+                    <p class="fst-italic">Early sexual activity (before age 18) and having multiple sexual partners increase the likelihood of exposure to high-risk HPV strains.</p>
+                    <h3>Smoking</h3>
+                    <p>Women who smoke are twice as likely to develop cervical cancer. Carcinogens in tobacco damage the DNA of cervical cells and weaken the immune system's ability to fight HPV infections.</p>
+                    <h3>Weakened Immune System</h3>
+                    <p>Conditions like HIV/AIDS or taking immunosuppressive drugs (e.g., for organ transplants or autoimmune diseases) make it harder for the body to clear HPV.</p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Cervical Screening</h4>
+                            <p><b>Gender:</b> Female</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 3551 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>
+                    End Team Member 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+       Prostate Title
+      <div class="container section-title mt-4" data-aos="fade-up">
+        <h3>Postrate Cancer Screening</h3>
+
+      </divEnd Prostate Title
+
+      <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+        <div class="row">
+          <div class="col-lg-3">
+            <ul class="nav nav-tabs flex-column">
+              <li class="nav-item">
+                <a class="nav-link active show" data-bs-toggle="tab" href="#postrate-tab-1">Postrate Cancer </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#postrate-tab-2">Tests included</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#postrate-tab-3">When to Start</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" data-bs-toggle="tab" href="#postrate-tab-4">Risks and Considerations</a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-lg-9 mt-4 mt-lg-0">
+            <div class="tab-content">
+              <div class="tab-pane active show" id="postrate-tab-1">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Postrate Screening</h3>
+                    <p class="fst-italic">Prostate cancer screening aims to detect cancer early in men without symptoms, typically using a Prostate-Specific Antigen (PSA) blood test and a Digital Rectal Exam (DRE). </p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Postrate Screening</h4>
+                            <p><b>Gender:</b> Male</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 2578 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>End Team Member 
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="postrate-tab-2">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>PSA Blood Test</h3>
+                    <p class="fst-italic">Measures a protein produced by the prostate; elevated levels may indicate cancer, but also benign conditions like prostatitis or BPH.</p>
+                    <h3>Digital Rectal Exam</h3>
+                    <p class="fst-italic">A physical examination to feel for abnormalities in the prostate's texture, shape, or size.</p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Cervical Screening</h4>
+                            <p><b>Gender:</b> Male</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 2578 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>End Team Member 
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="postrate-tab-3">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>Age 50</h3>
+                    <p class="fst-italic">Average risk men.</p>
+                    <h3>Age 45</h3>
+                    <p>Men at higher risk (e.g., Black men, or those with a first-degree relative diagnosed before age 65). </p>
+                    <h3>Age 40</h3>
+                    <p>High-risk individuals, such as those with multiple family members or BRCA gene mutations. </p>
+                    <h3>Frequency</h3>
+                    <p>Usually every 2 to 3 years, depending on previous results.</p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Prostate  Screening</h4>
+                            <p><b>Gender:</b> Male</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 2578 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>End Team Member 
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="postrate-tab-4">
+                <div class="row">
+                  <div class="col-lg-8 details order-2 order-lg-1">
+                    <h3>False Positives</h3>
+                    <p class="fst-italic">High PSA levels do not automatically mean cancer, causing unnecessary anxiety and further, often invasive, testing (e.g., biopsies).</h3>
+                    <h3>Overdiagnosis/Overtreatment</h3>
+                    <p>Detecting slow-growing cancers that would never have caused symptoms, leading to unnecessary treatment and potential side effects. </p>
+                  </div>
+                  <div class="col-lg-4 order-1 order-lg-2 doctors packages-details">
+                    <div class="col-lg-12" data-aos="fade-up" data-aos-delay="100">
+                        <div class="team-member d-flex align-items-start">
+                        <div class="member-info">
+                            <h4>Prostate  Screening</h4>
+                            <p><b>Gender:</b> Male</p>
+                            <p><i class="fa-solid fa-file-lines"></i> Reports in 48 hours</p>
+                            <h5 class="social text-primary">₹ 2578 </h5>
+                            <button type="submit" class="cta-btn d-none d-sm-block mt-2">Book Now</button>
+                        </div>
+                        </div>
+                    </div>End Team Member 
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+ -->
+
+
+    </section><!-- /Packages Detail Section -->
+
+
+    </div><!-- End Packages Detail Page -->
+
+
+
+{% endblock %} 

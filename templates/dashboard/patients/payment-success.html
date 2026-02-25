@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <!-- Payment Page -->
+    <div class="page-title" data-aos="fade">
+      <nav class="breadcrumbs">
+        <div class="container">
+          <ol>
+            <li><a href="/">Home</a></li>
+            <li class="current">Payment</li>
+          </ol>
+        </div>
+      </nav>
+    </div><!-- End Payment Page -->
+
+
+
+    <!-- Payment Section -->
+   <section id="contact" class="contact section">
+
+      <!-- Section Title -->
+      <div class="container section-title" data-aos="fade-up">
+        <h2>Payment</h2>
+      </div><!-- End Section Title -->
+
+      <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert {% if message.tags == 'success' %}alert-success{% else %}alert-danger{% endif %} alert-dismissible fade show" role="alert">{{message}}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}               
+        {% endif %}
+
+        <div class="row gy-2  justify-content-center">
+
+          <div class="col-lg-8" data-aos="fade-up" data-aos-delay="100">
+            <h2>Payment</h2>
+                <h2>Successufll</h2>
+
+                
+                <script>
+                // document.addEventListener('DOMContentLoaded', function () {
+
+                //     var options = {
+                //         "key": "rzp_test_SBhBPUf9htwmCK",   // 🔹 Test Key ID (if you get one)
+                //         "amount": "{{ booking.amount|floatformat:0 }}00", // in paise
+                //         "currency": "INR",
+                //         "name": "OncoScreen",
+                //         "description": "Test Booking Payment",
+                //         "handler": function (response) {
+                //             // SUCCESS CALLBACK
+                //             window.location.href = "{% url 'payment' booking.id %}";
+                //         },
+                //         "theme": {
+                //             "color": "#0d6efd"
+                //         }
+                //     };
+
+                //     var rzp = new Razorpay(options);
+
+                //     document.getElementById('rzp-button').onclick = function (e) {
+                //         rzp.open();
+                //         e.preventDefault();
+                //     };
+                // });
+                </script>
+
+            
+           
+          </div><!-- End Payment -->
+
+
+
+        </div>
+
+      </div>
+
+    </section><!-- /Book Package Section -->
+   
+
+{% endblock %} 
