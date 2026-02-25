@@ -1,0 +1,4 @@
+Babel==2.18.0
+Django==6.0.2
+django_ckeditor==6.7.3
+razorpay==2.0.0
