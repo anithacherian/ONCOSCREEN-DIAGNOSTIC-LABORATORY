@@ -124,7 +124,7 @@ class LabTest(models.Model):
         ('IMAGING', 'Imaging /Scan'),
     )
 
-    name = models.CharField(max_length=255,unique=True,db_collation="nocase")
+    name = models.CharField(max_length=255,unique=True)
     description = models.TextField()
 
     result_type = models.CharField(
